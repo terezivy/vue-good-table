@@ -889,10 +889,12 @@ export default {
 
       //* flatten the rows for paging.
       let paginatedRows = [];
+      let headerRowsCount = 0;
       this.processedRows.forEach((childRows) => {
         //* only add headers when group options are enabled.
         if (this.groupOptions.enabled) {
           paginatedRows.push(childRows);
+          ++headerRowsCount;
         }
         paginatedRows.push(...childRows.children);
       });
@@ -909,9 +911,11 @@ export default {
         }
 
         // calculate page end now
-        let pageEnd = paginatedRows.length + 1;
+        let pageEnd = paginatedRows.length + 1 + headerRowsCount;
 
         // if the setting is not set to 'all'
+        // This will get complicated because you may well end `within'
+        // a grouped boundary
         if (this.currentPerPage !== -1) {
           pageEnd = this.currentPage * this.currentPerPage;
         }
